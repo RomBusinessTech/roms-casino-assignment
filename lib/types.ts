@@ -25,3 +25,8 @@ export interface RollResult {
     reward: number;
     credits: number;
 }
+
+export interface CashOutResult {
+    success: boolean;
+    amountCashedOut: number;
+}
