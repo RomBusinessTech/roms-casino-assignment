@@ -1,10 +1,10 @@
 "use client";
 
-import { initialize } from "next/dist/server/lib/render-server";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Home() {
   const [sessionId, setSessionId] = useState<string>("");
+  const [credits, setCredits] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -25,6 +25,7 @@ export default function Home() {
       const data = await response.json();
 
       setSessionId(data.sessionId);
+      setCredits(data.credits);
       setIsLoading(false);
     } catch (err) {
       console.error("Error starting session: ", err);
@@ -62,6 +63,8 @@ export default function Home() {
             </div>
           ) : (
             // implement SlotMachine component here
+
+            
 
             <div className="mt-8 pt-6 border-t border-gray-200 text-sm text-gray-600">
               <p className="font-semibold mb-2">How to use the slot machine:</p>
