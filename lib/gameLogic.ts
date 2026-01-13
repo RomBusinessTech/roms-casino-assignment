@@ -93,7 +93,7 @@ export function performCheat(
     return symbols;
 }
 
-// had a pretty annoying error here where I forgot to import my custom Symbol so it was using the global Symbol
+// had a pretty annoying error here where I forgot to import my custom Symbol, therefore it was using the global Symbol
 export function calculateReward(symbols: [Symbol, Symbol, Symbol]): number {
     if (!checkWin(symbols)) return 0;
 
