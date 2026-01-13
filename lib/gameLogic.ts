@@ -1,7 +1,7 @@
 import "server-only";
 
 import { randomUUID } from "crypto";
-import { GameSession } from "./types";
+import { GameSession, Symbol, SymbolRewards } from "./types";
 
 // memory store for sessions (in a real app we would use DB / Redis)
 const sessions = new Map<string, GameSession>();
@@ -55,3 +55,47 @@ export function deleteSession(sessionId: string): void {
 /*
     Slot machine functions
 */
+export function getRandomSymbol(): Symbol {
+    const symbols = Object.values(Symbol);
+
+    return symbols[Math.floor(Math.random() * symbols.length)];
+}
+
+export function rollSlots(): [Symbol, Symbol, Symbol] {
+    return [getRandomSymbol(), getRandomSymbol(), getRandomSymbol()];
+}
+
+export function checkWin(symbols: [Symbol, Symbol, Symbol]): boolean {
+    return symbols[0] === symbols[1] && symbols[1] === symbols[2];
+}
+
+export function shouldCheat(credits: number): { shouldCheat: boolean; cheatChance: number; } {
+    if (credits < 40) {
+        return { shouldCheat: false, cheatChance: 0 };
+    }
+
+    if (credits < 60) {
+        return { shouldCheat: true, cheatChance: 0.3 };
+    }
+
+    return { shouldCheat: true, cheatChance: 0.6 };
+}
+
+export function performCheat(
+    symbols: [Symbol, Symbol, Symbol],
+    cheatChance: number
+): [Symbol, Symbol, Symbol] {
+    // if random hits, re-roll
+    if (Math.random() < cheatChance) {
+        return rollSlots();
+    }
+
+    return symbols;
+}
+
+// had a pretty annoying error here where I forgot to import my custom Symbol so it was using the global Symbol
+export function calculateReward(symbols: [Symbol, Symbol, Symbol]): number {
+    if (!checkWin(symbols)) return 0;
+
+    return SymbolRewards[symbols[0]];
+}

@@ -1,5 +1,6 @@
 "use client";
 
+import { SlotMachine } from "@/components/SlotMachine";
 import { useEffect, useState } from "react";
 
 export default function Home() {
@@ -56,15 +57,20 @@ export default function Home() {
               <p className="text-red-600">{error}</p>
               <button
                 onClick={startSession}
-                className="mt-4 px-6 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-800"
+                className="mt-4 px-6 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-800 cursor-pointer"
               >
                 Retry
               </button>
             </div>
           ) : (
-            // implement SlotMachine component here
-
-            
+            // I get an error if i don't wrap SlotMachine in <>
+            // (Later on i remembered it's because JSX must have a single parent element)
+            <> 
+            <SlotMachine
+              sessionId={sessionId}
+              credits={credits}
+              onCreditsChange={setCredits}
+            />
 
             <div className="mt-8 pt-6 border-t border-gray-200 text-sm text-gray-600">
               <p className="font-semibold mb-2">How to use the slot machine:</p>
@@ -74,6 +80,7 @@ export default function Home() {
                 <li>Cash out anytime to collect your winnings</li>
               </ul>
             </div>
+            </>
           )}
         </div>
       </div>
